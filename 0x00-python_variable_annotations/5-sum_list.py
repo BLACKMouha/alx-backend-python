@@ -2,8 +2,10 @@
 
 '''5-sum_list module'''
 
+from typing import List
 
-def sum_list(input_list: list[float]) -> float:
+
+def sum_list(input_list: List[float]) -> float:
     '''
     Computes the sum of all list float numbers
     Arg:
