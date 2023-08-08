@@ -2,10 +2,10 @@
 
 '''6-sum_mixed_list module'''
 
-from typing import Union
+from typing import List, Union
 
 
-def sum_mixed_list(mxd_list: list[Union[int, float]]) -> float:
+def sum_mixed_list(mxd_list: List[Union[int, float]]) -> float:
     '''
     Computes the sum of a mixed types of numbers
     Arg:
