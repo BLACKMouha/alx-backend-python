@@ -1,8 +1,20 @@
+#!/usr/bin/env python3
+
+'''102-type_checking'''
+
 from typing import Tuple, List
 
 
 # mypy: ignore-errors
 def zoom_array(lst: Tuple, factor: int = 2) -> List:
+    '''
+    Builds a list of integers
+    Arg:
+        lst: a tuple
+        factor: an integer
+    Return:
+        a list of integers
+    '''
     zoomed_in: Tuple = [
         item for item in lst
         for i in range(int(factor))
