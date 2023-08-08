@@ -4,8 +4,9 @@
 
 from typing import Sequence, Union, Any, Mapping, TypeVar
 
-
 T = TypeVar('T', bound=Any)
+
+
 def safely_get_value(dct: Mapping, key: Any,
                      default: Union[T, None] = None
                      ) -> Union[Any, T]:
@@ -13,4 +14,3 @@ def safely_get_value(dct: Mapping, key: Any,
         return dct[key]
     else:
         return default
-

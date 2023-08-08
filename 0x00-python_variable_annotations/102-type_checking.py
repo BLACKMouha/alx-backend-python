@@ -1,5 +1,6 @@
 from typing import Tuple, List
 
+
 # mypy: ignore-errors
 def zoom_array(lst: Tuple, factor: int = 2) -> List:
     zoomed_in: Tuple = [
