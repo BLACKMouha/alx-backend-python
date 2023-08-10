@@ -9,7 +9,7 @@ from typing import AsyncIterator
 async_generator = __import__('0-async_generator').async_generator
 
 
-async def async_comprehension() -> AsyncIterator:
+async def async_comprehension() -> AsyncIterator[float]:
     '''
     Builds an asynchronous list comprehension of random float numbers
     between 0 to 10
