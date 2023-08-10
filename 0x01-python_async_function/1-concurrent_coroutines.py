@@ -13,6 +13,7 @@ async def wait_n(n: int, max_delay: int = 10) -> List[float]:
     '''
     Waits for a random delay between 0 to max_delay n times
     Arg:
+        n: the number of times to run the wait_random
         max_delay: an integer, the threshold
     Return:
         a float number, the delay
