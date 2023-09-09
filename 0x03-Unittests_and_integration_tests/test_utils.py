@@ -39,5 +39,26 @@ class TestGetJson(unittest.TestCase):
         self.assertEqual(get_json(a), b)
 
 
+class TestMemoize(unittest.TestCase):
+    '''Test cases for memoize method from utils module'''
+    def test_memoize(self):
+        class TestClass:
+
+            def a_method(self):
+                return 42
+
+            @memoize
+            def a_property(self):
+                return self.a_method()
+
+        with patch.object(TestClass, 'a_method', new_callable=Mock) as mock:
+            t = TestClass()
+            mock.return_value = 42
+            t.a_property
+            r = t.a_property
+            mock.assert_called_once()
+            self.assertEqual(42, r)
+
+
 if __name__ == '__main__':
     unittest.main()
