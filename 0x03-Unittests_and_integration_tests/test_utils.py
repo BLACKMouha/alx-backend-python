@@ -34,6 +34,8 @@ class TestGetJson(unittest.TestCase):
     ])
     @patch('requests.get', new_callable=Mock)
     def test_get_json(self, a, b, mock):
+        '''Using mock to simulate requests.get for testing JSON responses of
+        HTTP requests'''
         mock(a).json.return_value = b
         mock.assert_called_with(a)
         self.assertEqual(get_json(a), b)
@@ -42,13 +44,16 @@ class TestGetJson(unittest.TestCase):
 class TestMemoize(unittest.TestCase):
     '''Test cases for memoize method from utils module'''
     def test_memoize(self):
+        '''Memoization tested within a class by patching a method'''
         class TestClass:
             '''TestClass for testing memoize method'''
             def a_method(self):
+                '''a method for memoized methods'''
                 return 42
 
             @memoize
             def a_property(self):
+                '''memoized method using a_method'''
                 return self.a_method()
 
         with patch.object(TestClass, 'a_method', new_callable=Mock) as mock:
