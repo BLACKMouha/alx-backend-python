@@ -2,7 +2,7 @@
 """test_utils module"""
 from parameterized import parameterized
 import unittest
-from utils import (access_nested_map, get_json)
+from utils import (access_nested_map, get_json, memoize)
 from unittest.mock import Mock, patch
 
 
@@ -34,8 +34,9 @@ class TestGetJson(unittest.TestCase):
     ])
     @patch('requests.get', new_callable=Mock)
     def test_get_json(self, a, b, mock):
-        mock().json.return_value = b
-        self.assertEqual(get_json(a), mock().json())
+        mock(a).json.return_value = b
+        mock.assert_called_with(a)
+        self.assertEqual(get_json(a), b)
 
 
 if __name__ == '__main__':
