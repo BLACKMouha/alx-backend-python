@@ -39,4 +39,4 @@ class TestGithubOrgClient(unittest.TestCase):
             else:
                 self.assertRaises(KeyError,
                                   msg='this organization does not exist')
-            return
+        return
