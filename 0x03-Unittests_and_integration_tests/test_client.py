@@ -50,7 +50,6 @@ class TestGithubOrgClient(unittest.TestCase):
         (
             'abc',
             {'message': 'Not found!'},
-            []
         )
     ])
     @patch('client.get_json', new_callable=Mock)
