@@ -37,5 +37,6 @@ class TestGithubOrgClient(unittest.TestCase):
             if 'repos_url' in response:
                 self.assertEqual(response['repos_url'], goc._public_repos_url)
             else:
-                self.assertRaises(KeyError, msg='this organization does not exist')
+                self.assertRaises(KeyError,
+                                  msg='this organization does not exist')
             return
