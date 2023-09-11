@@ -24,6 +24,24 @@ class TestGithubOrgClient(unittest.TestCase):
         return
 
     @parameterized.expand([
+        ('google', {'repos_url': 'https://api.github.com/orgs/google/repos'}),
+        ('abc', {'message': 'Not found!'})
+    ])
+    def test_public_repos_url(self, org_name, response):
+        '''Test cases for GithubOrgClient._public_repos_url'''
+        with patch('client.GithubOrgClient.org',
+                   new_callable=PropertyMock) as mock:
+            goc = GithubOrgClient(org_name=org_name)
+            url = goc.ORG_URL.format(org=org_name)
+            mock.return_value = response
+            if 'repos_url' in response:
+                self.assertEqual(response['repos_url'], goc._public_repos_url)
+            else:
+                self.assertRaises(KeyError,
+                                  msg=response['message'])
+        return
+
+    @parameterized.expand([
         (
             'google',
             {'repos_url': 'https://api.github.com/orgs/google/repos'},
@@ -36,7 +54,7 @@ class TestGithubOrgClient(unittest.TestCase):
         )
     ])
     @patch('client.get_json', new_callable=Mock)
-    def test_public_repos_url(self, org_name, response, repos, mock_get_json):
+    def test_public_repos(self, org_name, response, repos, mock_get_json):
         '''Test cases for GithubOrgClient._public_repos_url and
         GihubOrgClient.public_repos_url'''
         with patch('client.GithubOrgClient._public_repos_url',
