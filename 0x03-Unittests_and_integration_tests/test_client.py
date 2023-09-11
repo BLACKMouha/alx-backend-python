@@ -68,4 +68,5 @@ class TestGithubOrgClient(unittest.TestCase):
             else:
                 self.assertRaises(KeyError,
                                   msg=response['message'])
+                self.assertEqual(repos)
         return
