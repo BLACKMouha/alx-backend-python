@@ -2,8 +2,10 @@
 '''test_client module'''
 import unittest
 from unittest.mock import patch, Mock, PropertyMock
-from parameterized import parameterized
+from parameterized import parameterized, parameterized_class
+import requests
 from client import GithubOrgClient
+from fixtures import TEST_PAYLOAD
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -83,3 +85,36 @@ class TestGithubOrgClient(unittest.TestCase):
                           return_value=boolean,
                           new_callable=Mock) as mock_has_license:
             self.assertEqual(r, boolean)
+        return
+
+
+@parameterized_class(
+    ('org_payload', 'repos_payload', 'expected_repos', 'apache2_repos'),
+    TEST_PAYLOAD
+)
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    '''Integration test cases for testing GithubOrgClient class'''
+
+    @classmethod
+    def setUpClass(cls):
+        urls = {
+            'https://api.github.com/orgs/google': cls.org_payload,
+            'https://api.github.com/orgs/google/repos': cls.repos_payload,
+        }
+
+        def get_payload(url):
+            if url in urls:
+                return Mock(**{'json.return_value': urls[url]})
+            return Mock(**{'json.side_effect': KeyError('repos_url')})
+
+        cls.get_patcher = patch('requests.get', get_payload)
+        cls.mock_get = cls.get_patcher.start()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.get_patcher.stop()
+
+    def test_public_repos(cls):
+        '''Integration test cases for GithubOrgClient.public_repos method'''
+        goc = GithubOrgClient('google')
+        cls.assertEqual(goc.public_repos(), cls.expected_repos)
