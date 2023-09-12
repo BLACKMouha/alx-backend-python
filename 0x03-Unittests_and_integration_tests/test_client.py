@@ -41,34 +41,30 @@ class TestGithubOrgClient(unittest.TestCase):
                                   msg=response['message'])
         return
 
-    @parameterized.expand([
-        (
-            'google',
-            {
-                'repos_url': "https://api.github.com/users/google/repos",
-                'repos': [
-                    {
-                        "id": 7697149,
-                        "name": "episodes.dart",
-                    },
-                    {
-                        "id": 7776515,
-                        "name": "cpp-netlib",
-                    },
-                ]
-            },
-            ['episodes.dart', 'cpp-netlib']
-        ),
-    ])
     @patch("client.get_json", new_callable=Mock)
-    def test_public_repos(self, org_name, response, repos_name, mock_get_json):
+    def test_public_repos(self, mock_get_json):
         '''Test cases for GithubOrgClient.public_repos and
         GihubOrgClient.public_repos'''
-        mock_get_json.return_value = response["repos"]
+        response = {
+            'repos_url': "https://api.github.com/users/google/repos",
+            'repos': [
+                {
+                    "id": 7697149,
+                    "name": "episodes.dart",
+                },
+                {
+                    "id": 7776515,
+                    "name": "cpp-netlib",
+                },
+            ],
+            'repos_name': ['episodes.dart', 'cpp-netlib']
+        }
         with patch('client.GithubOrgClient._public_repos_url',
                    new_callable=PropertyMock) as mock_pru:
+            mock_get_json.return_value = response["repos"]
             mock_pru.return_value = response["repos_url"]
-            goc = GithubOrgClient(org_name)
-            self.assertEqual(goc.public_repos(), repos_name)
+            goc = GithubOrgClient('google')
+            self.assertEqual(
+                goc.public_repos(), response['repos_name'])
         mock_get_json.assert_called_once()
         mock_pru.assert_called_once()
