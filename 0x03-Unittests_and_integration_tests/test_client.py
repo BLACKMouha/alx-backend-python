@@ -80,6 +80,7 @@ class TestGithubOrgClient(unittest.TestCase):
                 self.assertEqual(goc.public_repos(),
                                  public_repos)
                 mock_get_json.assert_called_once_with(response['repos_url'])
+                mock_get_json.assert_called_once()
             else:
                 mock_get_json(org_name).return_value = response
                 mock_pru.side_effect = KeyError('repos_url')
@@ -88,4 +89,3 @@ class TestGithubOrgClient(unittest.TestCase):
                 with self.assertRaises(public_repos[0], msg=public_repos[1]):
                     goc._public_repos_url
                     goc.public_repos
-        mock_get_json.assert_called()
