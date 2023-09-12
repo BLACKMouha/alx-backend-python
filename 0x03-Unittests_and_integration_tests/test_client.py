@@ -66,10 +66,9 @@ class TestGithubOrgClient(unittest.TestCase):
         GihubOrgClient.public_repos'''
         mock_get_json.return_value = response["repos"]
         with patch('client.GithubOrgClient._public_repos_url',
-                   new_callable=PropertyMock,) as mock_pru:
+                   new_callable=PropertyMock) as mock_pru:
             mock_pru.return_value = response["repos_url"]
             goc = GithubOrgClient(org_name)
             self.assertEqual(goc.public_repos(), repos_name)
-            mock_pru.assert_called_once()
         mock_get_json.assert_called_once()
         mock_pru.assert_called_once()
