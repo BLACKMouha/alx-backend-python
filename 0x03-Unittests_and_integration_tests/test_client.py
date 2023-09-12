@@ -89,3 +89,4 @@ class TestGithubOrgClient(unittest.TestCase):
                 with self.assertRaises(public_repos[0], msg=public_repos[1]):
                     goc._public_repos_url
                     goc.public_repos
+                mock_get_json.assert_called()
