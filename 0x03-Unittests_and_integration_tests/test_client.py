@@ -45,7 +45,7 @@ class TestGithubOrgClient(unittest.TestCase):
         (
             'google',
             {
-                'repos_url': 'https://api.github.com/orgs/google/repos',
+                'repos_url': "https://api.github.com/users/google/repos",
                 'repos': [
                     {
                         "id": 7697149,
@@ -53,8 +53,8 @@ class TestGithubOrgClient(unittest.TestCase):
                     },
                     {
                         "id": 7776515,
-                        "name": "cpp-netlib",
-                    }
+                        "name": "cpp-netlib"
+                    },
                 ]
             },
             ['episodes.dart', 'cpp-netlib']
@@ -71,7 +71,6 @@ class TestGithubOrgClient(unittest.TestCase):
             mock_pru.return_value = response['repos_url']
             mock_get_json.return_value = response['repos']
             self.assertEqual(goc._public_repos_url, response['repos_url'])
-            self.assertEqual(goc.public_repos(),
-                                public_repos)
+            self.assertEqual(goc.public_repos(), public_repos)
         mock_get_json.assert_called_once_with(response['repos_url'])
         mock_get_json.assert_called_once()
