@@ -59,7 +59,7 @@ class TestGithubOrgClient(unittest.TestCase):
         '''Test cases for GithubOrgClient.public_repos and
         GihubOrgClient.public_repos_url'''
         with patch('client.GithubOrgClient._public_repos_url',
-                          new_callable=PropertyMock) as mock_pru:
+                   new_callable=PropertyMock) as mock_pru:
             mock_pru.return_value = response['repos_url']
             mock_get_json.return_value = response['repos']
             goc = GithubOrgClient(org_name)
