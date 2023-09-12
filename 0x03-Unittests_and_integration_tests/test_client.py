@@ -54,16 +54,15 @@ class TestGithubOrgClient(unittest.TestCase):
             ['episodes.dart', 'cpp-netlib']
         ),
     ])
-    @patch('client.get_json', new_callable=Mock)
-    def test_public_repos(self, org_name, response,
-                          public_repos, mock_get_json):
+    @patch("client.get_json", new_callable=Mock)
+    def test_public_repos(self, org_name, response, repos_name, mock_get_json):
         '''Test cases for GithubOrgClient.public_repos and
         GihubOrgClient.public_repos_url'''
-        with patch.object(GithubOrgClient, '_public_repos_url',
-                   new_callable=PropertyMock) as mock_pru:
+        with patch.object(GithubOrgClient, "_public_repos_url",
+                          new_callable=PropertyMock) as mock_pru:
             mock_pru.return_value = response['repos_url']
             mock_get_json.return_value = response['repos']
             goc = GithubOrgClient(org_name)
-            self.assertEqual(goc.public_repos(), public_repos)
-            mock_get_json.assert_called_once()
-            mock_pru.assert_called_once()
+            self.assertEqual(goc.public_repos(), repos_name)
+        mock_get_json.assert_called_once()
+        mock_pru.assert_called_once()
