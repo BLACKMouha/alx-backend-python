@@ -66,3 +66,4 @@ class TestGithubOrgClient(unittest.TestCase):
             goc = GithubOrgClient(org_name)
             self.assertEqual(goc.public_repos(), public_repos)
             mock_get_json.assert_called_once()
+            mock_pru.assert_called_once()
