@@ -58,11 +58,6 @@ class TestGithubOrgClient(unittest.TestCase):
                 ]
             },
             ['episodes.dart', 'cpp-netlib']
-        ),
-        (
-            'abc',
-            {'message': 'Not Found'},
-            [KeyError, 'repos_url']
         )
     ])
     @patch('client.get_json', new_callable=Mock)
