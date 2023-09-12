@@ -106,7 +106,6 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
             if url in urls:
                 return Mock(**{'json.return_value': urls[url]})
             return Mock(**{'json.side_effect': KeyError('repos_url')})
-
         cls.get_patcher = patch('requests.get', get_payload)
         cls.mock_get = cls.get_patcher.start()
 
@@ -118,3 +117,9 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         '''Integration test cases for GithubOrgClient.public_repos method'''
         goc = GithubOrgClient('google')
         cls.assertEqual(goc.public_repos(), cls.expected_repos)
+        return
+    
+    def test_public_repos_with_license(cls, license='apache-2.0'):
+        '''Integration test cases for public repos with license'''
+        goc = GithubOrgClient('google')
+        cls.assertEqual(goc.public_repos(license), cls.apache2_repos)
