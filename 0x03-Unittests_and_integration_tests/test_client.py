@@ -108,6 +108,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
             return Mock(**{'json.side_effect': KeyError('repos_url')})
         cls.get_patcher = patch('requests.get', get_payload)
         cls.mock_get = cls.get_patcher.start()
+        cls.addClassCleanup(cls.get_patcher.stop)
 
     @classmethod
     def tearDownClass(cls):
@@ -118,8 +119,11 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         goc = GithubOrgClient('google')
         cls.assertEqual(goc.public_repos(), cls.expected_repos)
         return
-    
-    def test_public_repos_with_license(cls, license=None):
+
+    def test_public_repos_with_license(cls):
         '''Integration test cases for public repos with license'''
         goc = GithubOrgClient('google')
-        cls.assertEqual(goc.public_repos(license='apache-2.0'), cls.apache2_repos)
+        cls.assertEqual(
+            goc.public_repos(license='apache-2.0'),
+            cls.apache2_repos
+        )
