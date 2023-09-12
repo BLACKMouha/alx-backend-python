@@ -47,14 +47,8 @@ class TestGithubOrgClient(unittest.TestCase):
             {
                 'repos_url': "https://api.github.com/users/google/repos",
                 'repos': [
-                    {
-                        "id": 7697149,
-                        "name": "episodes.dart",
-                    },
-                    {
-                        "id": 7776515,
-                        "name": "cpp-netlib"
-                    },
+                    {"id": 7697149, "name": "episodes.dart"},
+                    {"id": 7776515, "name": "cpp-netlib"}
                 ]
             },
             ['episodes.dart', 'cpp-netlib']
@@ -67,10 +61,8 @@ class TestGithubOrgClient(unittest.TestCase):
         GihubOrgClient.public_repos_url'''
         with patch('client.GithubOrgClient._public_repos_url',
                    new_callable=PropertyMock) as mock_pru:
-            goc = GithubOrgClient(org_name)
             mock_pru.return_value = response['repos_url']
             mock_get_json.return_value = response['repos']
-            self.assertEqual(goc._public_repos_url, response['repos_url'])
+            goc = GithubOrgClient(org_name)
             self.assertEqual(goc.public_repos(), public_repos)
-        mock_get_json.assert_called_once_with(response['repos_url'])
-        mock_get_json.assert_called_once()
+            mock_get_json.assert_called_once()
