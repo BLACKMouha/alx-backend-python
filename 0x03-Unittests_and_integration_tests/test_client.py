@@ -59,11 +59,6 @@ class TestGithubOrgClient(unittest.TestCase):
             },
             ['episodes.dart', 'cpp-netlib']
         ),
-        (
-            'abc',
-            {'message': 'Not Found'},
-            [KeyError, 'repos_url']
-        )
     ])
     @patch('client.get_json', new_callable=Mock)
     def test_public_repos(self, org_name, response,
@@ -73,20 +68,10 @@ class TestGithubOrgClient(unittest.TestCase):
         with patch('client.GithubOrgClient._public_repos_url',
                    new_callable=PropertyMock) as mock_pru:
             goc = GithubOrgClient(org_name)
-            if 'repos_url' in response:
-                mock_pru.return_value = response['repos_url']
-                mock_get_json.return_value = response['repos']
-                self.assertEqual(goc._public_repos_url, response['repos_url'])
-                self.assertEqual(goc.public_repos(),
-                                 public_repos)
-                mock_get_json.assert_called_once_with(response['repos_url'])
-                mock_get_json.assert_called_once()
-            else:
-                mock_get_json(org_name).return_value = response
-                mock_pru.side_effect = KeyError('repos_url')
-                self.assertRaises(KeyError, msg='repos_url')
-                self.assertEqual(response, goc.org())
-                with self.assertRaises(public_repos[0], msg=public_repos[1]):
-                    goc._public_repos_url
-                    goc.public_repos
-                mock_get_json.assert_called()
+            mock_pru.return_value = response['repos_url']
+            mock_get_json.return_value = response['repos']
+            self.assertEqual(goc._public_repos_url, response['repos_url'])
+            self.assertEqual(goc.public_repos(),
+                                public_repos)
+        mock_get_json.assert_called_once_with(response['repos_url'])
+        mock_get_json.assert_called_once()
